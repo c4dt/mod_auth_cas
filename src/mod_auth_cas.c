@@ -1848,7 +1848,7 @@ char *getResponseFromServer (request_rec *r, cas_cfg *c, char *ticket)
 		curl_easy_setopt(curl, CURLOPT_POST, 1L);
 		apr_generate_random_bytes((unsigned char *) buf, 16);
 		requestId = (char *) ap_md5_binary(r->pool, (unsigned char *) buf, 16);
-		ticket_escaped = apr_xml_quote_string(r->pool, ticket, false);
+		ticket_escaped = apr_xml_quote_string(r->pool, ticket, FALSE);
 		samlPayload = apr_psprintf(r->pool, "<?xml version=\"1.0\" encoding=\"utf-8\"?><SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"><SOAP-ENV:Header/><SOAP-ENV:Body><samlp:Request xmlns:samlp=\"urn:oasis:names:tc:SAML:1.0:protocol\"  MajorVersion=\"1\" MinorVersion=\"1\" RequestID=\"%s\"><samlp:AssertionArtifact>%s</samlp:AssertionArtifact></samlp:Request></SOAP-ENV:Body></SOAP-ENV:Envelope>", requestId, ticket_escaped);
 		headers = curl_slist_append(headers, "soapaction: http://www.oasis-open.org/committees/security");
 		headers = curl_slist_append(headers, "cache-control: no-cache");
